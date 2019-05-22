@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from darknet import Darknet
+from yolov3_detector.darknet import Darknet
 
 
 class Detector(nn.Module):
