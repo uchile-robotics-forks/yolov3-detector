@@ -90,10 +90,10 @@ def bbox_fit(detection, frame_size, input_size):
     ih, iw = input_size
 
     fdim = max(fh, fw)
-    pad_x = max((fh * iw / ih - fw) / 2, 0) * iw / fdim
-    pad_y = max((fw * ih / iw - fh) / 2, 0) * ih / fdim
-    scale_x = fw / (iw - 2 * pad_x)
-    scale_y = fh / (ih - 2 * pad_y)
+    pad_x = max((fh * iw / ih - fw) / 2., 0) * iw / fdim
+    pad_y = max((fw * ih / iw - fh) / 2., 0) * ih / fdim
+    scale_x = fw / (iw - 2. * pad_x)
+    scale_y = fh / (ih - 2.. * pad_y)
 
     detection[:, 0] = torch.clamp((detection[:, 0] - pad_x) * scale_x, min=0, max=fw)
     detection[:, 1] = torch.clamp((detection[:, 1] - pad_y) * scale_y, min=0, max=fh)
@@ -143,10 +143,10 @@ def non_max_suppression(prediction, conf_thresh=0.5, nms_thresh=0.4):
 
     # (cx, cy, bw, bh) -> (x1, y1, x2, y2)
     box_corner = prediction.new(prediction.shape)
-    box_corner[:, 0] = prediction[:, 0] - prediction[:, 2] / 2
-    box_corner[:, 1] = prediction[:, 1] - prediction[:, 3] / 2
-    box_corner[:, 2] = prediction[:, 0] + prediction[:, 2] / 2
-    box_corner[:, 3] = prediction[:, 1] + prediction[:, 3] / 2
+    box_corner[:, 0] = prediction[:, 0] - prediction[:, 2] / 2.
+    box_corner[:, 1] = prediction[:, 1] - prediction[:, 3] / 2.
+    box_corner[:, 2] = prediction[:, 0] + prediction[:, 2] / 2.
+    box_corner[:, 3] = prediction[:, 1] + prediction[:, 3] / 2.
     prediction[:, :4] = box_corner[:, :4]
 
     # Get score and class with highest confidence
