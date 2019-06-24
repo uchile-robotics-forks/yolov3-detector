@@ -116,7 +116,7 @@ class YOLOLayer(nn.Module):
     def forward(self, x):
         na = len(self.anchors)
         nb, _, gh, gw = x.size()
-        stride = self.input_size[0]*1.0 / gh
+        stride = self.input_size[0] / gh
 
         prediction = x.view(nb, na, self.bbox_attrs, gh, gw).permute(0, 1, 3, 4, 2).contiguous()
 
@@ -131,7 +131,7 @@ class YOLOLayer(nn.Module):
             # Calculate offsets for each grid
             self.grid_x = torch.arange(gw, dtype=torch.float32).repeat(gh, 1).view([1, 1, gh, gw]).to(x.device)
             self.grid_y = torch.arange(gh, dtype=torch.float32).repeat(gw, 1).t().view([1, 1, gh, gw]).to(x.device)
-            scaled_anchors = x.new([(aw *1.0 / stride, ah *1.0/ stride) for aw, ah in self.anchors])
+            scaled_anchors = x.new([(aw / stride, ah / stride) for aw, ah in self.anchors])
             self.anchor_w = scaled_anchors[:, 0:1].view((1, na, 1, 1))
             self.anchor_h = scaled_anchors[:, 1:2].view((1, na, 1, 1))
 
@@ -190,7 +190,7 @@ def create_modules(module_defs):
             bn = int(module_def['batch_normalize'])
             filters = int(module_def['filters'])
             kernel_size = int(module_def['size'])
-            pad = (kernel_size - 1.0) // 2.0 if int(module_def['pad']) else 0
+            pad = (kernel_size - 1) // 2 if int(module_def['pad']) else 0
             modules.add_module(
                 'conv_%d' % i,
                 nn.Conv2d(

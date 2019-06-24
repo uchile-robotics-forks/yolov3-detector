@@ -93,7 +93,7 @@ def bbox_fit(detection, frame_size, input_size):
     pad_x = max((fh * iw / ih - fw) / 2., 0) * iw / fdim
     pad_y = max((fw * ih / iw - fh) / 2., 0) * ih / fdim
     scale_x = fw / (iw - 2. * pad_x)
-    scale_y = fh / (ih - 2.. * pad_y)
+    scale_y = fh / (ih - 2. * pad_y)
 
     detection[:, 0] = torch.clamp((detection[:, 0] - pad_x) * scale_x, min=0, max=fw)
     detection[:, 1] = torch.clamp((detection[:, 1] - pad_y) * scale_y, min=0, max=fh)
